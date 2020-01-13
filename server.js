@@ -1,11 +1,30 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const cookieParser = require("cookie-parser");
+const session = require("express-session");
 
 const PORT = process.env.PORT || 3000;
 const app = express();
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+
+app.use((req, res, next) => {
+  console.log(req.url, res.statusCode);
+  next();
+});
+
+app.use(cookieParser());
+app.use(
+  session({
+    secret: "secret",
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      maxAge: 1000000
+    }
+  })
+);
 
 app.set("view engine", "ejs");
 
@@ -24,17 +43,71 @@ mongoose
   });
 
 const Todo = require("./models/todo");
+const User = require("./models/user");
 
 app.use("/public", express.static("./public"));
 
-app.get("/", (req, res) => {
-  Todo.find({}).then(result => {
-    console.log("Data : ", result);
+// register get
+app.get("/register", (req, res) => {
+  res.render("register");
+});
 
-    res.render("home", { todos: result });
+// register post
+app.post("/register", (req, res) => {
+  console.log(req.body);
+  let u1 = new User(req.body);
+
+  u1.save().then(result => {
+    console.log("User Addeded", result);
+
+    res.redirect("/login");
   });
 });
 
+// login get
+app.get("/login", (req, res) => {
+  res.render("login");
+});
+
+// login Post
+app.post("/login", (req, res) => {
+  const { email, password } = req.body;
+  User.findOne({ email: email, password: password }).then(result => {
+    if (result) {
+      req.session.email = email;
+      res.redirect("/");
+    } else {
+      res.redirect("/login");
+    }
+  });
+});
+
+function check_auth(req, res, next) {
+  if (req.session.email) {
+    next();
+  } else {
+    res.redirect("/login");
+  }
+}
+
+app.get("/check", check_auth, (req, res) => {
+  res.send("gggg");
+});
+
+// home
+app.get("/", (req, res) => {
+  if (req.session.email) {
+    Todo.find({}).then(result => {
+      console.log("Data : ", result);
+
+      res.render("home", { todos: result });
+    });
+  } else {
+    res.redirect("/login");
+  }
+});
+
+// add new todo
 app.post("/addtodo", (req, res) => {
   console.log(req.body);
   let todo1 = new Todo({ message: req.body.todo });
@@ -45,6 +118,7 @@ app.post("/addtodo", (req, res) => {
   });
 });
 
+// update todo get
 app.get("/update/:id", (req, res) => {
   Todo.findById(req.params.id).then(result => {
     console.log("data : ", result);
@@ -53,6 +127,7 @@ app.get("/update/:id", (req, res) => {
 });
 
 mongoose.set("useFindAndModify", false);
+// update todo post
 app.post("/update/:id", (req, res) => {
   console.log(req.body);
   Todo.findByIdAndUpdate(req.params.id, { message: req.body.todo }).then(
@@ -63,6 +138,7 @@ app.post("/update/:id", (req, res) => {
   );
 });
 
+// delete todo
 app.get("/delete/:id", (req, res) => {
   console.log("Delete : ", req.params.id);
 
@@ -76,6 +152,10 @@ app.get("/delete/:id", (req, res) => {
     console.log("Result : ", result);
     res.redirect("/");
   });
+});
+
+app.use("", (req, res) => {
+  res.send("Invalid Request");
 });
 
 app.listen(PORT, () => {
