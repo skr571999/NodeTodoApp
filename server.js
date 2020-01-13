@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
+const flash = require("express-flash");
 
 const PORT = process.env.PORT || 3000;
 const app = express();
@@ -25,6 +26,7 @@ app.use(
     }
   })
 );
+app.use(flash());
 
 app.set("view engine", "ejs");
 
@@ -84,8 +86,10 @@ app.post("/login", (req, res) => {
 
 function check_auth(req, res, next) {
   if (req.session.email) {
+    req.flash("info", "User Loginned");
     next();
   } else {
+    req.flash("info", "User Not Loginned");
     res.redirect("/login");
   }
 }
@@ -95,16 +99,12 @@ app.get("/check", check_auth, (req, res) => {
 });
 
 // home
-app.get("/", (req, res) => {
-  if (req.session.email) {
-    Todo.find({}).then(result => {
-      console.log("Data : ", result);
+app.get("/", check_auth, (req, res) => {
+  Todo.find({}).then(result => {
+    console.log("Data : ", result);
 
-      res.render("home", { todos: result });
-    });
-  } else {
-    res.redirect("/login");
-  }
+    res.render("home", { todos: result });
+  });
 });
 
 // add new todo

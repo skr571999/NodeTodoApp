@@ -10,6 +10,14 @@
 <body>
     <h1>Todo App</h1>
 
+    <div>
+        <% if(messages){ %>
+        <p>
+            <%- messages.info %>
+        </p>
+        <% } %>
+    </div>
+
     <div class="container">
         <form action="/addtodo" method="POST">
             <p>Todo :
