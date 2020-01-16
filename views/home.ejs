@@ -1,40 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Todo App</title>
-    <link rel="stylesheet" href="/public/main.css">
-</head>
-<body>
+    <link rel="stylesheet" href="/public/main.css" />
+  </head>
+  <body>
     <h1>Todo App</h1>
+    <p>
+      <a href="/logout">Logout</a>
+    </p>
 
     <div>
-        <% if(messages){ %>
-        <p>
-            <%- messages.info %>
-        </p>
-        <% } %>
+      <% if(messages){ %>
+      <p>
+        <%- messages.info %>
+      </p>
+      <% } %>
     </div>
 
     <div class="container">
-        <form action="/addtodo" method="POST">
-            <p>Todo :
-                <input type="text" name="todo">
-                <input type="submit" value="Add">
-            </p>
-        </form>
+      <form action="/addtodo" method="POST">
+        <p>
+          Todo :
+          <input type="text" name="todo" />
+          <input type="submit" value="Add" />
+        </p>
+      </form>
     </div>
 
     <div class="container todoContainer">
-        <% for(let todo of todos){ %>
-            <p>
-                <%- todo.message %>
-                <a href="/delete/<%- todo._id %>">Delete</a>
-                <a href="/update/<%- todo._id %>">Update</a>
-            </p>
-        <% } %>
+      <% for(let todo of todos){ %>
+      <p>
+        <%- todo.message %>
+        <a href="/delete/<%- todo._id %>">Delete</a>
+        <a href="/update/<%- todo._id %>">Update</a>
+      </p>
+      <% } %>
     </div>
-</body>
+  </body>
 </html>

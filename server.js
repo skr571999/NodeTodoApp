@@ -1,6 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const cookieParser = require("cookie-parser");
+// const cookieParser = require("cookie-parser");
 const session = require("express-session");
 const flash = require("express-flash");
 
@@ -15,7 +15,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(cookieParser());
+// app.use(cookieParser());
 app.use(
   session({
     secret: "secret",
@@ -61,6 +61,7 @@ app.post("/register", (req, res) => {
 
   u1.save().then(result => {
     console.log("User Addeded", result);
+    req.flash("info", "User Registered Successfully");
 
     res.redirect("/login");
   });
@@ -84,19 +85,20 @@ app.post("/login", (req, res) => {
   });
 });
 
+app.get("/logout", (req, res) => {
+  // delete req.session.email
+  req.session.destroy(() => {
+    res.redirect("/login");
+  });
+});
+
 function check_auth(req, res, next) {
   if (req.session.email) {
-    req.flash("info", "User Loginned");
     next();
   } else {
-    req.flash("info", "User Not Loginned");
     res.redirect("/login");
   }
 }
-
-app.get("/check", check_auth, (req, res) => {
-  res.send("gggg");
-});
 
 // home
 app.get("/", check_auth, (req, res) => {
@@ -154,7 +156,7 @@ app.get("/delete/:id", (req, res) => {
   });
 });
 
-app.use("", (req, res) => {
+app.use((req, res) => {
   res.send("Invalid Request");
 });
 

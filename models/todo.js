@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
-const TodoSchema = mongoose.Schema({
+const todoSchema = mongoose.Schema({
   message: String
 });
 
-module.exports = mongoose.model("Todo", TodoSchema);
+module.exports = mongoose.model("Todo", todoSchema);
