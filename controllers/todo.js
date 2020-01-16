@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 const Todo = require("./../models/todo");
+const User = require("./../models/user");
 
 function check_auth(req, res, next) {
   if (req.session.email) {
@@ -13,21 +14,29 @@ function check_auth(req, res, next) {
 
 // home
 router.get("/", check_auth, (req, res) => {
-  Todo.find({}).then(result => {
-    console.log("Data : ", result);
-
-    res.render("home", { todos: result });
-  });
+  User.find({email: req.session.email}).then(users=>{
+    let userId = users[0]._id
+    Todo.find({userId: userId}).then(result => {
+      console.log("Data : ", result);
+  
+      res.render("home", { todos: result });
+    });
+  })
 });
 
 // add new todo
 router.post("/addtodo", (req, res) => {
   console.log(req.body);
-  let todo1 = new Todo({ message: req.body.todo });
 
-  todo1.save().then(result => {
-    console.log(result);
-    res.redirect("/");
+  User.find({ email: req.session.email }).then(users => {
+    let userId = users[0]._id;
+
+    let todo1 = new Todo({ message: req.body.todo, userId: userId });
+
+    todo1.save().then(result => {
+      console.log(result);
+      res.redirect("/");
+    });
   });
 });
 
