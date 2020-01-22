@@ -3,12 +3,3 @@ body{
     font-family: sans-serif;
     background-color: rgb(245, 245, 245);
 }
-
-.container{
-    padding: 2em;
-}
-
-.todoContainer p{
-    background-color: rgb(255, 219, 219);
-    padding: 1em;
-}

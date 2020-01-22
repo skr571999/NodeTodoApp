@@ -8,69 +8,53 @@ function check_auth(req, res, next) {
   if (req.session.email) {
     next();
   } else {
+    req.flash("info", "You need to Login");
     res.redirect("/user/login");
   }
 }
 
 // home
 router.get("/", check_auth, (req, res) => {
-  User.find({email: req.session.email}).then(users=>{
-    let userId = users[0]._id
-    Todo.find({userId: userId}).then(result => {
-      console.log("Data : ", result);
-  
+  User.find({ email: req.session.email }).then(users => {
+    let userId = users[0]._id;
+    Todo.find({ userId: userId }).then(result => {
       res.render("home", { todos: result });
     });
-  })
+  });
 });
 
 // add new todo
-router.post("/addtodo", (req, res) => {
-  console.log(req.body);
-
+router.post("/addtodo", check_auth, (req, res) => {
   User.find({ email: req.session.email }).then(users => {
     let userId = users[0]._id;
 
     let todo1 = new Todo({ message: req.body.todo, userId: userId });
 
     todo1.save().then(result => {
-      console.log(result);
       res.redirect("/");
     });
   });
 });
 
 // update todo get
-router.get("/update/:id", (req, res) => {
+router.get("/update/:id", check_auth, (req, res) => {
   Todo.findById(req.params.id).then(result => {
-    console.log("data : ", result);
     res.render("update", { data: result });
   });
 });
 
 // update todo post
-router.post("/update/:id", (req, res) => {
-  console.log(req.body);
+router.post("/update/:id", check_auth, (req, res) => {
   Todo.findByIdAndUpdate(req.params.id, { message: req.body.todo }).then(
     result => {
-      console.log("After Update : ", result);
       res.redirect("/");
     }
   );
 });
 
 // delete todo
-router.get("/delete/:id", (req, res) => {
-  console.log("Delete : ", req.params.id);
-
-  // // Method One
-  // Todo.findByIdAndDelete(req.params.id).then(result => {
-  //   console.log('Result : ',result);
-  //   res.redirect("/");
-  // });
-  // // Method Two
+router.get("/delete/:id", check_auth, (req, res) => {
   Todo.findOneAndDelete({ _id: req.params.id }).then(result => {
-    console.log("Result : ", result);
     res.redirect("/");
   });
 });

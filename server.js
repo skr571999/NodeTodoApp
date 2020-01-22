@@ -1,6 +1,5 @@
 const express = require("express");
 const mongoose = require("mongoose");
-// const cookieParser = require("cookie-parser");
 const session = require("express-session");
 const flash = require("express-flash");
 
@@ -15,7 +14,6 @@ app.use((req, res, next) => {
   next();
 });
 
-// app.use(cookieParser());
 app.use(
   session({
     secret: "secret",
@@ -28,6 +26,7 @@ app.use(
 );
 app.use(flash());
 
+// Setting View Engine
 app.set("view engine", "ejs");
 
 // Database Connection
@@ -44,19 +43,21 @@ mongoose
     // process.exit();
   });
 
+// route for static folder
 app.use("/public", express.static("./public"));
 
 mongoose.set("useFindAndModify", false);
 
-const UserRoute = require("./controllers/user");
-const TodoRoute = require("./controllers/todo");
+// Controllers
+const UserController = require("./controllers/user");
+const TodoController = require("./controllers/todo");
 
 app.get("/", (req, res) => {
   res.redirect("/todo");
 });
 
-app.use("/user", UserRoute);
-app.use("/todo", TodoRoute);
+app.use("/user", UserController);
+app.use("/todo", TodoController);
 
 app.use((req, res) => {
   res.send("Invalid Request");

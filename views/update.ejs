@@ -1,22 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Todo App | Update</title>
-    <link rel="stylesheet" href="/public/main.css">
-</head>
-<body>
-    <h1>Todo App | Update</h1>
-
+  <head>
+    <%- include('head.ejs', {title: "Update Todo"}) -%>
+  </head>
+  <body>
     <div class="container">
-        <form method="POST">
-            <p>Todo :
-                <input type="text" name="todo" value="<%- data.message %>">
-                <input type="submit" value="Update">
-            </p>
+      <h1>TodoApp</h1>
+      <hr>
+      <h4>Update Todo</h2>
+
+      <div class="container mt-5">
+        <form method="POST" class="form-inline">
+          <div class="form-group">
+            <label for="updatetodo">
+              Update Todo :
+            </label>
+            <input
+              type="text"
+              id="updatetodo"
+              class="form-control ml-2"
+              name="todo"
+              value="<%- data.message %>"
+            />
+            <input type="submit" value="Update" class="btn btn-success ml-2" />
+          </div>
         </form>
+      </div>
     </div>
-</body>
+  </body>
 </html>

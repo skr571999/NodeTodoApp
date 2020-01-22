@@ -1,44 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Todo App</title>
-    <link rel="stylesheet" href="/public/main.css" />
-  </head>
+  <%- include('head.ejs', {title: "Home"}) -%>
   <body>
-    <h1>Todo App</h1>
-    <p>
-      <a href="/user/logout">Logout</a>
-    </p>
-
-    <div>
-      <% if(messages){ %>
-      <p>
-        <%- messages.info %>
-      </p>
-      <% } %>
-    </div>
-
     <div class="container">
-      <form action="/todo/addtodo" method="POST">
-        <p>
-          Todo :
-          <input type="text" name="todo" />
-          <input type="submit" value="Add" />
-        </p>
-      </form>
-    </div>
-
-    <div class="container todoContainer">
-      <% for(let todo of todos){ %>
+      <h1>Todo App</h1>
       <p>
-        <%- todo.message %>
-        <a href="/todo/delete/<%- todo._id %>">Delete</a>
-        <a href="/todo/update/<%- todo._id %>">Update</a>
+        <a href="/user/logout">Logout</a>
       </p>
-      <% } %>
+      <hr />
+      <%- include('message') -%>
+
+      <!-- todo adding form -->
+      <div class="container pt-3">
+        <form action="/todo/addtodo" method="POST" class="form-inline">
+          <div class="form-group">
+            <label for="newtodo">New Todo :</label>
+            <input
+              type="text"
+              name="todo"
+              id="newtodo"
+              class="form-control ml-2"
+            />
+            <input type="submit" value="Add" class="btn btn-primary ml-2" />
+          </div>
+        </form>
+      </div>
+
+      <!-- all todo list -->
+      <div class="container mt-5">
+        <% if(todos.length > 0){ %>
+        <div>
+          <% for(let todo of todos){ %>
+          <div class="row shadow-lg p-3 mb-3 bg-white rounded">
+            <div class="col-6">
+              <p>
+                <%- todo.message %>
+              </p>
+            </div>
+            <div class="col-6">
+              <a href="/todo/delete/<%- todo._id %>" class="btn btn-danger"
+                >Delete</a
+              >
+              <a href="/todo/update/<%- todo._id %>" class="btn btn-success"
+                >Update</a
+              >
+            </div>
+          </div>
+          <% } %>
+        </div>
+        <% }else{ %>
+          <p class="text-center">No TODO</p>
+        <% } %>
+      </div>
     </div>
+    <%- include('jquery') -%>
   </body>
 </html>
