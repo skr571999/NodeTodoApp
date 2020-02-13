@@ -10,7 +10,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.use((req, res, next) => {
-  console.log(req.url, res.statusCode);
+  console.log(req.url,req.method, res.statusCode);
   next();
 });
 
@@ -59,8 +59,9 @@ app.get("/", (req, res) => {
 app.use("/user", UserController);
 app.use("/todo", TodoController);
 
+// to handle invalid requests
 app.use((req, res) => {
-  res.send("Invalid Request");
+  res.status(404).send("Invalid Request");
 });
 
 app.listen(PORT, () => {

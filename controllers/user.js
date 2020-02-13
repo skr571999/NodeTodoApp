@@ -19,6 +19,7 @@ router.post("/register", (req, res) => {
 
       u1.save().then(result => {
         console.log("User Addeded", result);
+        // SendMail().then()
         req.flash("info", "User Registered Successfully");
 
         res.redirect("/user/login");
