@@ -2,57 +2,77 @@
 <html lang="en">
   <%- include('head.ejs', {title: "Home"}) -%>
   <body>
+    <%- include('navbar') %>
     <div class="container">
-      <h1>Todo App</h1>
-      <p>
-        <a href="/user/logout">Logout</a>
-      </p>
-      <hr />
-      <%- include('message') -%>
-
-      <!-- todo adding form -->
-      <div class="container pt-3">
-        <form action="/todo/addtodo" method="POST" class="form-inline">
-          <div class="form-group">
-            <label for="newtodo">New Todo :</label>
-            <input
-              type="text"
-              name="todo"
-              id="newtodo"
-              class="form-control ml-2"
-            />
-            <input type="submit" value="Add" class="btn btn-primary ml-2" />
+      <div class="row justify-content-center">
+        <div class="col-12 col-sm-10 col-md-8 col-lg-6">
+          <!-- todo adding form -->
+          <div class="pt-3">
+            <form action="/todo/addtodo" method="POST">
+              <div class="row align-items-center">
+                <div class="input-group input-group-lg col-10">
+                  <input
+                    type="text"
+                    name="todo"
+                    class="form-control"
+                    required
+                    placeholder="Type todo here..."
+                    onchange="this.value = this.value.trim()"
+                  />
+                </div>
+                <div class="col-2 p-0">
+                  <button
+                    type="submit"
+                    class="btn btn-primary p-0 rounded-circle px-1"
+                    title="Add"
+                  >
+                    <span class="material-icons mt-1" style="font-size: 2.5em;">
+                      add
+                    </span>
+                  </button>
+                </div>
+              </div>
+            </form>
           </div>
-        </form>
-      </div>
 
-      <!-- all todo list -->
-      <div class="container mt-5">
-        <% if(todos.length > 0){ %>
-        <div>
-          <% for(let todo of todos){ %>
-          <div class="row shadow-lg p-3 mb-3 bg-white rounded">
-            <div class="col-6">
-              <p>
-                <%- todo.message %>
-              </p>
-            </div>
-            <div class="col-6">
-              <a href="/todo/delete/<%- todo._id %>" class="btn btn-danger"
-                >Delete</a
+          <!-- all todo list -->
+          <div class="container my-5">
+            <% if(todos.length > 0){ %>
+            <div>
+              <% for(let todo of todos){ %>
+              <div
+                class="row shadow-lg p-3 mb-3 bg-white rounded align-items-center"
               >
-              <a href="/todo/update/<%- todo._id %>" class="btn btn-success"
-                >Update</a
-              >
+                <div class="col-8">
+                  <p class="m-0"><%- todo.message %></p>
+                </div>
+                <div class="col-4">
+                  <a
+                    href="/todo/delete/<%- todo._id %>"
+                    class="btn btn-danger btn-sm"
+                    title="Delete"
+                  >
+                    <span class="material-icons pt-1"> delete </span>
+                  </a>
+                  <a
+                    href="/todo/update/<%- todo._id %>"
+                    class="btn btn-success btn-sm"
+                    title="Edit"
+                  >
+                    <span class="material-icons pt-1"> create </span>
+                  </a>
+                </div>
+              </div>
+              <% } %>
             </div>
+            <% }else{ %>
+            <p class="text-center">No TODO</p>
+            <% } %>
           </div>
-          <% } %>
         </div>
-        <% }else{ %>
-          <p class="text-center">No TODO</p>
-        <% } %>
       </div>
     </div>
+
     <%- include('jquery') -%>
   </body>
 </html>

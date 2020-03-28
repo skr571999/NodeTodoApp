@@ -5,41 +5,50 @@ const SendMail = require("./../middlewares/sendmail");
 
 const User = require("./../models/user");
 
-// register get
+// to send register page
 router.get("/register", (req, res) => {
   res.render("register");
 });
 
-// register post
+// to add new user
 router.post("/register", (req, res) => {
   console.log(req.body);
-  User.find({ email: req.body.email }).then(users => {
-    if (users.length === 0) {
-      let u1 = new User(req.body);
-
-      u1.save().then(result => {
-        console.log("User Addeded", result);
-        // SendMail().then()
-        req.flash("info", "User Registered Successfully");
-
-        res.redirect("/user/login");
-      });
-    } else {
-      req.flash("info", "Email Already Registered");
-      res.redirect("/user/register");
-    }
-  });
+  const { email, password, name } = req.body;
+  if (name && email && password) {
+    User.find({ email }).then(users => {
+      if (users.length === 0) {
+        User.create({ email, password, name })
+          .then(result => {
+            console.log("User Addeded", result);
+            req.flash("info", "User Registered Successfully");
+            res.redirect("/user/login");
+          })
+          .catch(err => {
+            console.log("Error : ", err);
+            req.flash("info", "Error Occured During Registration");
+            res.redirect("/user/register");
+          });
+      } else {
+        req.flash("info", "Email Already Registered");
+        res.redirect("/user/register");
+      }
+    });
+  } else {
+    req.flash("info", "Name, email or password is Invalid");
+    res.redirect("/user/register");
+  }
 });
 
-// login get
+// to send login page
 router.get("/login", (req, res) => {
   res.render("login");
 });
 
-// login Post
+// to login the user after checking email and password
 router.post("/login", (req, res) => {
   const { email, password } = req.body;
-  User.findOne({ email: email, password: password }).then(result => {
+  User.findOne({ email, password }).then(result => {
+    console.log(result);
     if (result) {
       req.session.email = email;
       req.flash("info", "Login Success");
@@ -51,7 +60,7 @@ router.post("/login", (req, res) => {
   });
 });
 
-// logout controller
+// to destroy the session
 router.get("/logout", (req, res) => {
   // delete req.session.email
   req.session.destroy(() => {

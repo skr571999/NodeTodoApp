@@ -10,10 +10,11 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.use((req, res, next) => {
-  console.log(req.url,req.method, res.statusCode);
+  console.log(req.url, req.method, res.statusCode);
   next();
 });
 
+// for session
 app.use(
   session({
     secret: "secret",
@@ -33,7 +34,8 @@ app.set("view engine", "ejs");
 mongoose
   .connect("mongodb://localhost:27017/tododata", {
     useNewUrlParser: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
+    useFindAndModify: false
   })
   .then(() => {
     console.log("DB Connected");
@@ -46,18 +48,13 @@ mongoose
 // route for static folder
 app.use("/public", express.static("./public"));
 
-mongoose.set("useFindAndModify", false);
-
-// Controllers
-const UserController = require("./controllers/user");
-const TodoController = require("./controllers/todo");
-
 app.get("/", (req, res) => {
   res.redirect("/todo");
 });
 
-app.use("/user", UserController);
-app.use("/todo", TodoController);
+// Controllers
+app.use("/user", require("./controllers/user"));
+app.use("/todo", require("./controllers/todo"));
 
 // to handle invalid requests
 app.use((req, res) => {

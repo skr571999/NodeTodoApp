@@ -1,6 +1,6 @@
 <% if(messages.info){ %>
 <div class="messageContainer">
-  <div class="alert alert-info alert-dismissible fade show" role="alert">
+  <div class="alert alert-primary alert-dismissible fade show" role="alert">
     <%- messages.info %>
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
       <span aria-hidden="true">&times;</span>
@@ -15,8 +15,15 @@
     justify-content: center;
   }
   .messageContainer > div {
+    z-index: 1050;
     position: absolute;
-    top: 1em;
+    top: 2em;
+    opacity: .8;
     box-shadow: 0 0 5px rgb(165, 165, 165);
+    transition: .1s;
+  }
+  .messageContainer > div:hover{
+    opacity: 1;
+    transform: scale(1.1);
   }
 </style>

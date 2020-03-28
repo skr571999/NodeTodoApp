@@ -2,14 +2,13 @@
 <html lang="en">
   <%- include('head.ejs', {title: "Register"}) -%>
   <body>
+    <%- include('navbar') %>
     <div class="container">
-      <h1 class="text-center">Register Here</h1>
+      <h2 class="text-center">Register Here</h2>
       <hr />
-      <%- include('message') -%>
 
-      <div class="container row">
-        <div class="col-2"></div>
-        <div class="col-8">
+      <div class="row justify-content-center">
+        <div class="col-10">
           <form action="" method="post">
             <div class="form-group">
               <label for="name">Name</label>
@@ -33,7 +32,7 @@
                 name="password"
               />
             </div>
-            <div class="form-group">
+            <div class="form-group text-center">
               <input type="submit" value="Register" class="btn btn-primary" />
             </div>
           </form>
@@ -41,9 +40,9 @@
             Already have a Account, <a href="/user/login">Login Here</a>
           </p>
         </div>
-        <div class="col-2"></div>
       </div>
     </div>
+
     <%- include('jquery') -%>
   </body>
 </html>
