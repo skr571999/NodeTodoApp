@@ -3,7 +3,8 @@
   <%- include('head.ejs', {title: "Home"}) -%>
   <body>
     <%- include('navbar') %>
-    <div class="container">
+
+    <div class="container-fluid">
       <div class="row justify-content-center">
         <div class="col-12 col-sm-10 col-md-8 col-lg-6">
           <!-- todo adding form -->
@@ -16,7 +17,7 @@
                     name="todo"
                     class="form-control"
                     required
-                    placeholder="Type todo here..."
+                    placeholder="Type here..."
                     onchange="this.value = this.value.trim()"
                   />
                 </div>
@@ -36,43 +37,43 @@
           </div>
 
           <!-- all todo list -->
-          <div class="container my-5">
+          <div class="container-fluid my-5">
             <% if(todos.length > 0){ %>
             <div>
               <% for(let todo of todos){ %>
               <div
-                class="row shadow-lg p-3 mb-3 bg-white rounded align-items-center"
+                class="row shadow-lg py-3 mb-3 bg-white rounded align-items-center"
               >
-                <div class="col-8">
+                <div class="col-7">
                   <p class="m-0"><%- todo.message %></p>
                 </div>
-                <div class="col-4">
+                <div class="col-5 text-center">
                   <a
                     href="/todo/delete/<%- todo._id %>"
-                    class="btn btn-danger btn-sm"
+                    class="btn btn-light btn-sm"
                     title="Delete"
                   >
-                    <span class="material-icons pt-1"> delete </span>
+                    <span class="material-icons pt-1" style="color: red;"> delete </span>
                   </a>
                   <a
                     href="/todo/update/<%- todo._id %>"
-                    class="btn btn-success btn-sm"
+                    class="btn btn-light btn-sm"
                     title="Edit"
                   >
-                    <span class="material-icons pt-1"> create </span>
+                    <span class="material-icons pt-1" style="color: green;"> create </span>
                   </a>
                 </div>
               </div>
               <% } %>
             </div>
             <% }else{ %>
-            <p class="text-center">No TODO</p>
+            <p class="text-center">Nothing Todo</p>
             <% } %>
           </div>
         </div>
       </div>
     </div>
 
-    <%- include('jquery') -%>
+    <%- include('vendor_scripts') -%>
   </body>
 </html>

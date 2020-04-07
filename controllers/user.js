@@ -7,7 +7,7 @@ const User = require("./../models/user");
 
 // to send register page
 router.get("/register", (req, res) => {
-  res.render("register");
+  res.render("register", { user: "" });
 });
 
 // to add new user
@@ -15,15 +15,15 @@ router.post("/register", (req, res) => {
   console.log(req.body);
   const { email, password, name } = req.body;
   if (name && email && password) {
-    User.find({ email }).then(users => {
+    User.find({ email }).then((users) => {
       if (users.length === 0) {
         User.create({ email, password, name })
-          .then(result => {
+          .then((result) => {
             console.log("User Addeded", result);
             req.flash("info", "User Registered Successfully");
             res.redirect("/user/login");
           })
-          .catch(err => {
+          .catch((err) => {
             console.log("Error : ", err);
             req.flash("info", "Error Occured During Registration");
             res.redirect("/user/register");
@@ -41,13 +41,13 @@ router.post("/register", (req, res) => {
 
 // to send login page
 router.get("/login", (req, res) => {
-  res.render("login");
+  res.render("login", { user: "" });
 });
 
 // to login the user after checking email and password
 router.post("/login", (req, res) => {
   const { email, password } = req.body;
-  User.findOne({ email, password }).then(result => {
+  User.findOne({ email, password }).then((result) => {
     console.log(result);
     if (result) {
       req.session.email = email;

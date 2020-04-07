@@ -6,6 +6,10 @@ const flash = require("express-flash");
 const PORT = process.env.PORT || 3000;
 const app = express();
 
+let dbURL = "mongodb://localhost:27017/tododata";
+dbURL =
+  "mongodb+srv://admin:admin@cluster0-3yyos.mongodb.net/test?retryWrites=true&w=majority";
+
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
@@ -21,8 +25,8 @@ app.use(
     resave: false,
     saveUninitialized: false,
     cookie: {
-      maxAge: 1000000
-    }
+      maxAge: 1000000,
+    },
   })
 );
 app.use(flash());
@@ -32,15 +36,15 @@ app.set("view engine", "ejs");
 
 // Database Connection
 mongoose
-  .connect("mongodb://localhost:27017/tododata", {
+  .connect(dbURL, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    useFindAndModify: false
+    useFindAndModify: false,
   })
   .then(() => {
     console.log("DB Connected");
   })
-  .catch(err => {
+  .catch((err) => {
     console.log("DB not Connected");
     // process.exit();
   });
@@ -55,6 +59,7 @@ app.get("/", (req, res) => {
 // Controllers
 app.use("/user", require("./controllers/user"));
 app.use("/todo", require("./controllers/todo"));
+app.use("/admin", require("./controllers/admin"));
 
 // to handle invalid requests
 app.use((req, res) => {

@@ -1,13 +1,20 @@
 <nav
   class="navbar fixed-top navbar-expand navbar-dark"
-  style="background-color: #0046a1;"
+  style="background-color: #005ed8;"
 >
-  <a class="navbar-brand">TodoApp</a>
+  <a class="navbar-brand"><b>Todo</b>APP</a>
+  <% if(user){ %>
   <ul class="navbar-nav ml-auto">
     <li class="nav-item">
-      <a class="nav-link" href="/user/logout">Logout</a>
+      <% if(user.isAdmin){ %>
+      <a class="nav-link" href="/admin/logout">Logout <%- user.email %></a>
+      <% }else{ %>
+      <a class="nav-link" href="/user/logout">Logout <%- user.email %></a>
+      <% } %>
     </li>
   </ul>
+  <% } %>
 </nav>
 <div class="mt-5 pt-5"></div>
+
 <%- include('message') -%>

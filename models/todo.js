@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const todoSchema = mongoose.Schema({
   message: String,
   userId: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: mongoose.ObjectId,
     ref: "User",
     required: true
   }

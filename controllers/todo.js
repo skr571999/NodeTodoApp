@@ -15,22 +15,27 @@ function check_auth(req, res, next) {
 
 // home
 router.get("/", check_auth, (req, res) => {
-  User.find({ email: req.session.email }).then(users => {
+  User.find({ email: req.session.email }).then((users) => {
     let userId = users[0]._id;
-    Todo.find({ userId: userId }).then(result => {
-      res.render("home", { todos: result });
-    });
+    Todo.find({ userId: userId })
+      .then((result) => {
+        let user = { email: req.session.email };
+        res.render("home", { todos: result, user: user });
+      })
+      .catch((err) => {
+        res.send("Error Occured");
+      });
   });
 });
 
 // add new todo
 router.post("/addtodo", check_auth, (req, res) => {
-  User.find({ email: req.session.email }).then(users => {
+  User.find({ email: req.session.email }).then((users) => {
     let userId = users[0]._id;
 
     let todo1 = new Todo({ message: req.body.todo, userId: userId });
 
-    todo1.save().then(result => {
+    todo1.save().then((result) => {
       res.redirect("/");
     });
   });
@@ -38,15 +43,20 @@ router.post("/addtodo", check_auth, (req, res) => {
 
 // update todo get
 router.get("/update/:id", check_auth, (req, res) => {
-  Todo.findById(req.params.id).then(result => {
-    res.render("update", { data: result });
-  });
+  Todo.findById(req.params.id)
+    .then((result) => {
+      let user = { email: req.session.email };
+      res.render("update", { data: result, user: user });
+    })
+    .catch((err) => {
+      res.send("Error Occured");
+    });
 });
 
 // update todo post
 router.post("/update/:id", check_auth, (req, res) => {
   Todo.findByIdAndUpdate(req.params.id, { message: req.body.todo }).then(
-    result => {
+    (result) => {
       res.redirect("/");
     }
   );
@@ -54,7 +64,7 @@ router.post("/update/:id", check_auth, (req, res) => {
 
 // delete todo
 router.get("/delete/:id", check_auth, (req, res) => {
-  Todo.findOneAndDelete({ _id: req.params.id }).then(result => {
+  Todo.findOneAndDelete({ _id: req.params.id }).then((result) => {
     res.redirect("/");
   });
 });
