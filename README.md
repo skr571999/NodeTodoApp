@@ -6,8 +6,8 @@
 - VSCode Extensions
   - Prettier - for code formatting
 - Development OS - Window 10
-- Frontend - ejs(html)
-- Backend - NodeJS(ExpressJS)
+- Frontend - Ejs, Bootstrap 
+- Backend - NodeJS(ExpressJS), MongoDB
 
 ## Usage
 
