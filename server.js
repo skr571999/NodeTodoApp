@@ -7,8 +7,6 @@ const PORT = process.env.PORT || 3000;
 const app = express();
 
 let dbURL = "mongodb://localhost:27017/tododata";
-dbURL =
-  "mongodb+srv://admin:admin@cluster0-3yyos.mongodb.net/test?retryWrites=true&w=majority";
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
