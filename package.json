@@ -9,7 +9,9 @@
     "mongoose": "^5.8.6",
     "nodemailer": "^6.4.2"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  },
   "scripts": {
     "start": "nodemon server.js"
   },
