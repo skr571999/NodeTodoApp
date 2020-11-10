@@ -1,0 +1,2 @@
+{"_id":{"$oid":"5faaba04dd951221e03188bc"},"email":"admin@gmail.com","password":"admin","name":"admin","__v":0,"isAdmin":true}
+{"_id":{"$oid":"5faabdbdbed0864a24630e3c"},"email":"admin1@gmail.com","password":"admin","name":"admin1","__v":0}

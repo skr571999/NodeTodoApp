@@ -12,19 +12,19 @@ router.get("/register", (req, res) => {
 
 // to add new user
 router.post("/register", (req, res) => {
-  console.log(req.body);
+  // console.log(req.body);
   const { email, password, name } = req.body;
   if (name && email && password) {
     User.find({ email }).then((users) => {
       if (users.length === 0) {
         User.create({ email, password, name })
           .then((result) => {
-            console.log("User Addeded", result);
+            // console.log("User Addeded", result);
             req.flash("info", "User Registered Successfully");
             res.redirect("/user/login");
           })
           .catch((err) => {
-            console.log("Error : ", err);
+            // console.log("Error : ", err);
             req.flash("info", "Error Occured During Registration");
             res.redirect("/user/register");
           });
@@ -48,7 +48,7 @@ router.get("/login", (req, res) => {
 router.post("/login", (req, res) => {
   const { email, password } = req.body;
   User.findOne({ email, password }).then((result) => {
-    console.log(result);
+    // console.log(result);
     if (result) {
       req.session.email = email;
       req.flash("info", "Login Success");

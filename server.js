@@ -6,7 +6,7 @@ const flash = require("express-flash");
 const PORT = process.env.PORT || 3000;
 const app = express();
 
-let dbURL = "mongodb://localhost:27017/tododata";
+let DB_URL = "mongodb://localhost:27017/test";
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -34,7 +34,7 @@ app.set("view engine", "ejs");
 
 // Database Connection
 mongoose
-  .connect(dbURL, {
+  .connect(DB_URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useFindAndModify: false,
