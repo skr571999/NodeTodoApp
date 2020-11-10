@@ -11,8 +11,6 @@
 ## Usage
 
 ```sh
-git clone https://github.com/skr571999/NodeTodoApp.git
-
 # Start the mongo DB server
 mongod
 
